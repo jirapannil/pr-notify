@@ -1,0 +1,27 @@
+@model IEnumerable<PRNotify.Models.Notification>
+@{
+    ViewData["Title"] = "การแจ้งเตือน";
+}
+<h2 class="my-4">การแจ้งเตือน</h2>
+<ul class="list-group">
+    @foreach (var n in Model)
+    {
+        <li class="list-group-item @(n.IsRead == true ? "list-group-item-light" : "list-group-item-warning")">
+            <div>
+                <strong>@n.Message</strong>
+                <span class="text-muted small float-end">@n.CreateDate.ToString("g")</span>
+            </div>
+            @if (!string.IsNullOrEmpty(n.Url))
+            {
+                <a href="@n.Url" class="btn btn-link btn-sm">ดูรายละเอียด</a>
+            }
+            @if (n.IsRead != true)
+            {
+                <form asp-action="MarkAsRead" method="post" style="display:inline">
+                    <input type="hidden" name="id" value="@n.NotificationId" />
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">อ่านแล้ว</button>
+                </form>
+            }
+        </li>
+    }
+</ul>
